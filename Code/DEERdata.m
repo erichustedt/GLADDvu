@@ -50,16 +50,15 @@ classdef DEERdata < handle
                 end
             elseif filetype == 2
                 [obj.deer_t,obj.z1,obj.dx] = ...
-                            read_ASCIITEXT([obj.fullname '.txt']);
-                obj.deer_t0 = obj.deer_t*1.e-09;
-                obj.nfit = length(obj.deer_t0);
-                obj.deer_r = real(obj.z1);
-                obj.rnoise = imag(obj.z1(1));
-                obj.z4 = obj.z1;
-                obj.weight = ones(size(obj.deer_t0))/(obj.rnoise^2);
+                            read_DATA([obj.fullname]);
+                obj.npts = length(obj.deer_t);
+                obj.deer_t = obj.deer_t*1.e-09;
+                obj.dx = obj.dx*1.e-09;
+                % first step is truncate
+                obj.DEER_Truncate(app, index);
             elseif filetype == 3
                 [obj.deer_t,obj.z1,obj.dx] = ...
-                    read_ASCIIDATA([obj.fullname '.dat']);
+                    read_DATA([obj.fullname]);
                 obj.npts = length(obj.deer_t);
                 obj.deer_t = obj.deer_t*1.e-09;
                 obj.dx = obj.dx*1.e-09;
